@@ -22,9 +22,10 @@ def main():
     if not LINE.strip():
         raise ValueError("roast must not be only whitespace")
     os.makedirs(OUTPUT_DIR, exist_ok=True)
-    # make.fun collects the outputs as another user than the one the
-    # program runs as, so the output must be readable by everyone.
-    os.chmod(OUTPUT_DIR, 0o755)
+    # Do not chmod the output directory: the grader runs this program
+    # as a different user on a directory it does not own, and chmod
+    # would fail the run. The file we create gets mode 0644 below,
+    # which is all make.fun needs to collect it.
     with open(DESTINATION, "w", encoding="utf-8", newline="") as handle:
         handle.write(LINE)
     os.chmod(DESTINATION, 0o644)
